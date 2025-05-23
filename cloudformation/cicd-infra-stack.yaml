@@ -1,0 +1,363 @@
+---
+Metadata:
+  AWSToolsMetrics:
+    IaC_Generator: "arn:aws:cloudformation:ap-south-1:137068222956:generatedTemplate/9ab7d29a-2325-4b59-8929-ee44c4dedb53"
+Parameters:
+  GitHubRepoOwner:
+    Type: String
+    Default: "Heeyaichen"
+    Description: "GitHub repository owner."
+  GithubRepo:
+    Type: String
+    Default: "aws-java-app-devOps"
+    Description: "GitHub repository name."
+Resources:
+  IAMManagedPolicyPolicyserviceroleCodeBuildBasePolicynextworkdevopscicdapsouth1:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    DependsOn: "IAMRoleCodebuildnextworkdevopscicdservicerole"
+    Properties:
+      ManagedPolicyName: "CodeBuildBasePolicy-nextwork-devops-cicd-ap-south-1"
+      Path: "/service-role/"
+      Description: "Policy used in trust relationship with CodeBuild"
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource:
+          - "arn:aws:logs:ap-south-1:137068222956:log-group:/aws/codebuild/nextwork-devops-cicd"
+          - "arn:aws:logs:ap-south-1:137068222956:log-group:/aws/codebuild/nextwork-devops-cicd:*"
+          Action:
+          - "logs:CreateLogGroup"
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+          Effect: "Allow"
+        - Resource:
+          - "arn:aws:s3:::codepipeline-ap-south-1-*"
+          Action:
+          - "s3:PutObject"
+          - "s3:GetObject"
+          - "s3:GetObjectVersion"
+          - "s3:GetBucketAcl"
+          - "s3:GetBucketLocation"
+          Effect: "Allow"
+        - Resource:
+          - "arn:aws:s3:::nextwork-devops-cicd-chen"
+          - "arn:aws:s3:::nextwork-devops-cicd-chen/*"
+          Action:
+          - "s3:PutObject"
+          - "s3:GetBucketAcl"
+          - "s3:GetBucketLocation"
+          Effect: "Allow"
+        - Resource:
+          - "arn:aws:codebuild:ap-south-1:137068222956:report-group/nextwork-devops-cicd-*"
+          Action:
+          - "codebuild:CreateReportGroup"
+          - "codebuild:CreateReport"
+          - "codebuild:UpdateReport"
+          - "codebuild:BatchPutTestCases"
+          - "codebuild:BatchPutCodeCoverages"
+          Effect: "Allow"
+      Roles:
+      - "codebuild-nextwork-devops-cicd-service-role"
+      Users: []
+  IAMRoleEC2instancenextworkcicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/"
+      MaxSessionDuration: 3600
+      RoleName: "EC2-instance-nextwork-cicd"
+      Description: "Allows EC2 instances to access services related to the NextWork\
+        \ CI/CD pipeline series."
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            Service: "ec2.amazonaws.com"
+  CodeArtifactRepositoryRepositorynextworknextworkdevopscicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeArtifact::Repository"
+    DeletionPolicy: "Delete"
+    Properties:
+      Upstreams:
+      - Fn::GetAtt:
+        - "CodeArtifactRepositoryRepositorynextworkmavencentralstore"
+        - "Name"
+      RepositoryName: "nextwork-devops-cicd"
+      Description: "This repository stores packages related to a Java web app created\
+        \ as a part of NextWork's CI/CD Pipeline series."
+      DomainName:
+        Fn::GetAtt:
+        - "CodeArtifactDomainDomainnextwork"
+        - "Name"
+  CodeStarConnectionsConnectionConnectionf7a6e93852b54e13940fbfb90e400f5d:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeStarConnections::Connection"
+    DeletionPolicy: "Delete"
+    Properties:
+      ConnectionName: "nextwork-devops-cicd"
+      ProviderType: "GitHub"
+      Tags: []
+  IAMManagedPolicyPolicyserviceroleCodeBuildCodeConnectionsSourceCredentialsPolicynextworkdevopscicdapsouth1137068222956:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    DependsOn: "IAMRoleCodebuildnextworkdevopscicdservicerole"
+    Properties:
+      ManagedPolicyName: "CodeBuildCodeConnectionsSourceCredentialsPolicy-nextwork-devops-cicd-ap-south-1-137068222956"
+      Path: "/service-role/"
+      Description: "Policy used in trust relationship with CodeBuild"
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource:
+          - "arn:aws:codestar-connections:ap-south-1:137068222956:connection/f7a6e938-52b5-4e13-940f-bfb90e400f5d"
+          - "arn:aws:codeconnections:ap-south-1:137068222956:connection/f7a6e938-52b5-4e13-940f-bfb90e400f5d"
+          Action:
+          - "codestar-connections:GetConnectionToken"
+          - "codestar-connections:GetConnection"
+          - "codeconnections:GetConnectionToken"
+          - "codeconnections:GetConnection"
+          - "codeconnections:UseConnection"
+          Effect: "Allow"
+      Roles:
+      - "codebuild-nextwork-devops-cicd-service-role"
+      Users: []
+  CodeArtifactDomainDomainnextwork:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeArtifact::Domain"
+    DeletionPolicy: "Delete"
+    Properties:
+      DomainName: "nextwork"
+  IAMManagedPolicyPolicyserviceroleCodeBuildCloudWatchLogsPolicynextworkdevopscicdapsouth1:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    DependsOn: "IAMRoleCodebuildnextworkdevopscicdservicerole"
+    Properties:
+      ManagedPolicyName: "CodeBuildCloudWatchLogsPolicy-nextwork-devops-cicd-ap-south-1"
+      Path: "/service-role/"
+      Description: "Policy used in trust relationship with CodeBuild"
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource:
+          - "arn:aws:logs:ap-south-1:137068222956:log-group:/aws/codebuild/nextwork-devops-cicd"
+          - "arn:aws:logs:ap-south-1:137068222956:log-group:/aws/codebuild/nextwork-devops-cicd:*"
+          Action:
+          - "logs:CreateLogGroup"
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+          Effect: "Allow"
+      Roles:
+      - "codebuild-nextwork-devops-cicd-service-role"
+      Users: []
+  CodeDeployApplicationNextworkdevopscicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeDeploy::Application"
+    DeletionPolicy: "Delete"
+    Properties:
+      ApplicationName: "nextwork-devops-cicd"
+      ComputePlatform: "Server"
+  IAMManagedPolicyPolicycodeartifactnextworkconsumerpolicy:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    DependsOn: 
+      - "IAMRoleCodebuildnextworkdevopscicdservicerole"
+      - "IAMRoleEC2instancenextworkcicd"
+    Properties:
+      ManagedPolicyName: "codeartifact-nextwork-consumer-policy"
+      Path: "/"
+      Description: "Provides permissions to read from CodeArtifact. Created as a part\
+        \ of NextWork CICD Pipeline series."
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource: "*"
+          Action:
+          - "codeartifact:GetAuthorizationToken"
+          - "codeartifact:GetRepositoryEndpoint"
+          - "codeartifact:ReadFromRepository"
+          Effect: "Allow"
+        - Condition:
+            StringEquals:
+              sts:AWSServiceName: "codeartifact.amazonaws.com"
+          Resource: "*"
+          Action: "sts:GetServiceBearerToken"
+          Effect: "Allow"
+      Roles:
+      - "EC2-instance-nextwork-cicd"
+      - "codebuild-nextwork-devops-cicd-service-role"
+      Users: []
+  IAMInstanceProfileEC2instancenextworkcicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::InstanceProfile"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: "IAMRoleEC2instancenextworkcicd"
+      InstanceProfileName:
+        Ref: "IAMRoleEC2instancenextworkcicd"
+  IAMRoleNextWorkCodeDeployRole:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/"
+      ManagedPolicyArns:
+      - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+      MaxSessionDuration: 3600
+      RoleName: "NextWorkCodeDeployRole"
+      Description: "Allows CodeDeploy to call AWS services such as Auto Scaling on\
+        \ your behalf.\nCreated as a part of NextWork's Cl/CD Pipeline series.\n\n"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            Service: "codedeploy.amazonaws.com"
+          Sid: ""
+  S3BucketNextworkdevopscicdchen:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: "Delete"
+    Properties:
+      PublicAccessBlockConfiguration:
+        RestrictPublicBuckets: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        BlockPublicAcls: true
+      BucketName: "nextwork-devops-cicd-chen"
+      OwnershipControls:
+        Rules:
+        - ObjectOwnership: "BucketOwnerEnforced"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - BucketKeyEnabled: true
+          ServerSideEncryptionByDefault:
+            SSEAlgorithm: "AES256"
+  IAMRoleCodebuildnextworkdevopscicdservicerole:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/service-role/"
+      MaxSessionDuration: 3600
+      RoleName: "codebuild-nextwork-devops-cicd-service-role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            Service: "codebuild.amazonaws.com"
+  CodeArtifactRepositoryRepositorynextworkmavencentralstore:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeArtifact::Repository"
+    DeletionPolicy: "Delete"
+    Properties:
+      RepositoryName: "maven-central-store"
+      Description: "Provides Maven artifacts from Maven Central Repository."
+      ExternalConnections:
+      - "public:maven-central"
+      DomainName:
+        Fn::GetAtt:
+        - "CodeArtifactDomainDomainnextwork"
+        - "Name"
+  CodeBuildProjectnextworkdevopscicd:
+    Type: "AWS::CodeBuild::Project"
+    DependsOn: 
+      - "IAMRoleCodebuildnextworkdevopscicdservicerole"
+      - "S3BucketNextworkdevopscicdchen"
+      - "CodeStarConnectionsConnectionConnectionf7a6e93852b54e13940fbfb90e400f5d"
+    Properties:
+      Name: "nextwork-devops-cicd"
+      Description: "Build project for NextWork web application."
+      Source:
+        Type: GITHUB
+        Location: !Sub "https://github.com/${GitHubRepoOwner}/${GithubRepo}"
+        BuildSpec: "buildspec.yml"
+        Auth:
+          Type: "OAUTH"
+          Resource: !Ref CodeStarConnectionsConnectionConnectionf7a6e93852b54e13940fbfb90e400f5d
+        ReportBuildStatus: true
+      Artifacts:
+        Type: S3
+        Name: nextwork-web-build.zip
+        Packaging: ZIP
+        Location: !Ref "S3BucketNextworkdevopscicdchen"
+        Path: /builds
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:corretto8
+      ServiceRole: !GetAtt "IAMRoleCodebuildnextworkdevopscicdservicerole.Arn"
+      LogsConfig:
+        CloudWatchLogs:
+          Status: ENABLED
+          GroupName: /aws/codebuild/nextwork-devops-cicd
+          StreamName: webapp
+  CodeDeployDeploymentGroupNextworkdevopscicd:
+    Type: "AWS::CodeDeploy::DeploymentGroup"
+    DependsOn: 
+      - "IAMRoleNextWorkCodeDeployRole"
+      - "CodeDeployApplicationNextworkdevopscicd"
+    Properties:
+      ApplicationName: !Ref "CodeDeployApplicationNextworkdevopscicd"
+      DeploymentGroupName: "nextwork-devops-cicd-deployment-group"
+      ServiceRoleArn: !GetAtt "IAMRoleNextWorkCodeDeployRole.Arn"
+      DeploymentConfigName: "CodeDeployDefault.AllAtOnce"
+      Ec2TagFilters:
+      - Key: role
+        Type: KEY_AND_VALUE
+        Value: webserver
+      AutoScalingGroups: []
+
+  CodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /service-role/
+      Policies:
+        - PolicyName: CodePipelineSourcePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                  - 's3:GetObjectVersion'
+                  - 's3:GetBucketVersioning'
+                  - 's3:PutObject'
+                  - 'codebuild:BatchGetBuilds'
+                  - 'codebuild:StartBuild'
+                  - 'codedeploy:CreateDeployment'
+                  - 'codedeploy:GetDeployment'
+                  - 'codedeploy:GetDeploymentConfig'
+                  - 'codedeploy:GetApplicationRevision'
+                  - 'codedeploy:RegisterApplicationRevision'
+                  - 'codestar-connections:UseConnection'
+                Resource:
+                  - !Sub 'arn:aws:s3:::${S3BucketNextworkdevopscicdchen}/*'
+                  - !GetAtt CodeBuildProjectnextworkdevopscicd.Arn
+                  - !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:application:${CodeDeployApplicationNextworkdevopscicd}'
+                  - !GetAtt CodeStarConnectionsConnectionConnectionf7a6e93852b54e13940fbfb90e400f5d.ConnectionArn
+                  - !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${CodeDeployApplicationNextworkdevopscicd}/${CodeDeployDeploymentGroupNextworkdevopscicd}'
+                  - !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentconfig:*'
