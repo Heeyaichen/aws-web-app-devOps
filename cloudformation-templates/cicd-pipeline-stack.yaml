@@ -35,6 +35,11 @@ Parameters:
     Type: String
     Default: "nextwork-devops-cicd-chen"
     Description: Name of the existing S3 bucket for artifacts
+  
+  BuildInfraStackName:
+    Type: String
+    Default: "build-infra-stack"
+    Description: Name of the infrastructure stack that exports resources
 
 Resources:
   ArtifactBucket:
@@ -47,17 +52,12 @@ Resources:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
 
-  GitHubConnection:
-    Type: AWS::CodeStarConnections::Connection
-    Properties:
-      ConnectionName: nextwork-devops-cicd-github
-      ProviderType: GitHub
-
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
       Name: nextwork-devops-cicd
-      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      RoleArn: 
+        Fn::ImportValue: !Sub "${BuildInfraStackName}-CodePipelineServiceRole"
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactBucket
@@ -71,7 +71,7 @@ Resources:
                 Provider: CodeStarSourceConnection
                 Version: '1'
               Configuration:
-                ConnectionArn: !Ref GitHubConnection
+                ConnectionArn: !Ref GitHubConnectionArn
                 FullRepositoryId: !Sub ${GitHubOwner}/${GitHubRepo}
                 BranchName: !Ref GitHubBranch
                 OutputArtifactFormat: CODE_ZIP
@@ -89,7 +89,8 @@ Resources:
                 Provider: CodeBuild
                 Version: '1'
               Configuration:
-                ProjectName: !Ref CodeBuildProject
+                ProjectName:
+                  Fn::ImportValue: !Sub "${BuildInfraStackName}-CodeBuildProjectName"
               InputArtifacts:
                 - Name: SourceCode
               OutputArtifacts:
