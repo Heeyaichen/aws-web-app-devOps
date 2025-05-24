@@ -7,10 +7,16 @@ Parameters:
     Type: String
     Default: "Heeyaichen"
     Description: "GitHub repository owner."
+
   GithubRepo:
     Type: String
     Default: "aws-java-app-devOps"
     Description: "GitHub repository name."
+
+  GitHubConnectionArn:
+    Type: String
+    Description: "ARN of the GitHub CodeStar connection"
+    
 Resources:
   IAMManagedPolicyPolicyserviceroleCodeBuildBasePolicynextworkdevopscicdapsouth1:
     UpdateReplacePolicy: "Delete"
@@ -35,6 +41,8 @@ Resources:
           Effect: "Allow"
         - Resource:
           - "arn:aws:s3:::codepipeline-ap-south-1-*"
+          - "arn:aws:s3:::cicd-pipeline-stack-*"           
+          - "arn:aws:s3:::cicd-pipeline-stack-*/*"
           Action:
           - "s3:PutObject"
           - "s3:GetObject"
@@ -45,6 +53,8 @@ Resources:
         - Resource:
           - "arn:aws:s3:::nextwork-devops-cicd-chen"
           - "arn:aws:s3:::nextwork-devops-cicd-chen/*"
+          - !Sub 'arn:aws:s3:::${S3BucketNextworkdevopscicdchen}/*'
+          - !Sub 'arn:aws:s3:::cicd-pipeline-stack-*/*'
           Action:
           - "s3:PutObject"
           - "s3:GetBucketAcl"
@@ -356,8 +366,23 @@ Resources:
                   - 'codestar-connections:UseConnection'
                 Resource:
                   - !Sub 'arn:aws:s3:::${S3BucketNextworkdevopscicdchen}/*'
+                  - !Sub 'arn:aws:s3:::cicd-pipeline-stack-*/*'
                   - !GetAtt CodeBuildProjectnextworkdevopscicd.Arn
                   - !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:application:${CodeDeployApplicationNextworkdevopscicd}'
                   - !GetAtt CodeStarConnectionsConnectionConnectionf7a6e93852b54e13940fbfb90e400f5d.ConnectionArn
                   - !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${CodeDeployApplicationNextworkdevopscicd}/${CodeDeployDeploymentGroupNextworkdevopscicd}'
                   - !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentconfig:*'
+                  - !Ref GitHubConnectionArn
+
+Outputs:
+  CodePipelineServiceRoleArn:
+    Description: ARN of the CodePipeline Service Role
+    Value: !GetAtt CodePipelineServiceRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-CodePipelineServiceRole"
+      
+  CodeBuildProjectName:
+    Description: Name of the CodeBuild project
+    Value: !Ref CodeBuildProjectnextworkdevopscicd
+    Export:
+      Name: !Sub "${AWS::StackName}-CodeBuildProjectName"
