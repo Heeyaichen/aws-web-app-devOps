@@ -1,5 +1,12 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
+Description: 'Infrastructure stack for deployment server'
+# This template creates a VPC, public subnet, internet gateway, security group, and EC2 instance for deployment server.
+# It also creates an IAM role for the EC2 instance with permissions to access SSM and S3.
+# The EC2 instance is configured to run a web server and is associated with the public subnet and security group.
+# The template is parameterized to allow customization of the Amazon Linux AMI ID and the IP address for security group rules.
+# The security group allows HTTP access from the specified IP address.
+# The template is designed to be used with AWS CloudFormation and can be deployed using the AWS Management Console, AWS CLI, or AWS SDKs.
 Parameters:
   AmazonLinuxAMIID:
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
