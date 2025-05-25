@@ -27,13 +27,13 @@ if [ "$HTTPD_STATUS" != "active" ]; then
 fi
 
 # Check if WAR file was deployed
-if [ ! -f /var/lib/tomcat/webapps/nextwork-web-project.war ]; then
+if [ ! -f /usr/share/tomcat/webapps/nextwork-web-project.war ]; then
     echo "WAR file not found"
     exit 1
 fi
 
 # Check if application was extracted
-if [ ! -d /var/lib/tomcat/webapps/nextwork-web-project ]; then
+if [ ! -d /usr/share/tomcat/webapps/nextwork-web-project ]; then
     echo "Application not extracted"
     exit 1
 fi
@@ -53,14 +53,14 @@ ls -la /usr/share/tomcat/webapps/
 echo "Checking application accessibility..."
 for i in {1..30}; do
     echo "Attempt $i of 30..."
-    Try both direct Tomcat and Apache proxy
-  TOMCAT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/nextwork-web-project/)
-  APACHE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/nextwork-web-project/)
+    # Try both direct Tomcat and Apache proxy
+    TOMCAT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/nextwork-web-project/)
+    APACHE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
     
-  echo "Tomcat Response: $TOMCAT_STATUS"
-  echo "Apache Response: $APACHE_STATUS"
+    echo "Tomcat Response: $TOMCAT_STATUS"
+    echo "Apache Response: $APACHE_STATUS"
 
-    if [ "$HTTP_CODE" == "200" ] || [ "APACHE_STATUS" == "200" ]; then
+    if [ "$TOMCAT_STATUS" == "200" ] || [ "$APACHE_STATUS" == "200" ]; then
         echo "✅ Success: Application is accessible"
         exit 0
     fi
