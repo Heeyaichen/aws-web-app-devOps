@@ -88,6 +88,11 @@ Resources:
         FromPort: '80'
         ToPort: '80'
         CidrIp: !Ref MyIP
+      - Description: Enable Tomcat access
+        IpProtocol: tcp
+        FromPort: '8080'
+        ToPort: '8080'
+        CidrIp: !Ref MyIP
       SecurityGroupEgress:
       - Description: Allow all traffic egress
         IpProtocol: -1
@@ -135,6 +140,15 @@ Resources:
             - Ref: PublicSecurityGroup
           SubnetId: 
             Ref: PublicSubnetA
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          yum update -y
+          amazon-linux-extras install -y java-openjdk11
+          yum install -y tomcat tomcat-webapps tomcat-admin-webapps
+          systemctl start tomcat
+          systemctl enable tomcat
+          chmod 777 /usr/share/tomcat/webapps
       Tags:
         - Key: 'Name'
           Value: !Join ['', [!Ref 'AWS::StackName', '::WebServer'] ]
