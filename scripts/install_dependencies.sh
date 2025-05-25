@@ -15,12 +15,13 @@ sudo cat << EOF > /etc/httpd/conf.d/tomcat_proxy.conf
   ServerAdmin root@localhost
   ServerName app.nextwork.com
   DefaultType text/html
+  
   ProxyRequests off
-  ProxyPreserveHost On
+  ProxyPreserveHost Off
 
   # Use the correct context path
-  ProxyPass / http://localhost:8080/nextwork-web-project
-  ProxyPassReverse / http://localhost:8080/nextwork-web-project
+  ProxyPass / http://localhost:8080/nextwork-web-project/
+  ProxyPassReverse / http://localhost:8080/nextwork-web-project/
   
   # Logging configuration
   ErrorLog /var/log/httpd/tomcat_error.log
