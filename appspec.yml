@@ -2,7 +2,16 @@ version: 0.0
 os: linux
 files:
   - source: /target/nextwork-web-project.war
-    destination: /var/lib/tomcat/webapps/
+    destination: /usr/share/tomcat/webapps/
+permissions:
+  - object: /usr/share/tomcat/webapps/
+    pattern: "**"
+    owner: tomcat
+    group: tomcat
+    mode: 755
+    type:
+      - directory
+      - file
 hooks:
   BeforeInstall:
     - location: scripts/install_dependencies.sh
