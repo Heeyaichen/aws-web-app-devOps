@@ -28,6 +28,10 @@ sudo cat << EOF > /etc/httpd/conf.d/tomcat_proxy.conf
 </VirtualHost>
 EOF
 
+# Create log directory and set permissions
+sudo mkdir -p /var/log/httpd
+sudo chown -R apache:apache /var/log/httpd
+
 # Restart services
 # sudo systemctl restart httpd
 # sudo systemctl restart tomcat
