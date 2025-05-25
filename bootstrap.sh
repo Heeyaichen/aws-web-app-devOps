@@ -51,7 +51,7 @@ read -r
 
 # Wait for connection to be available
 echo "👉 3. Waiting for connection to be available..."
-echo "👉 Checking connection status..."
+echo "● Checking connection status..."
 CONNECTION_STATUS=$(aws codestar-connections get-connection \
   --connection-arn $CONNECTION_ARN \
   --region $AWS_REGION \
