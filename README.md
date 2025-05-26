@@ -1,4 +1,5 @@
 # aws-java-app-devOps
+Work in progress...
 # aws-java-app-devOps
 
 so if i were to create a cloudformation stack template here in my project directory, should i place it in the root or a separate folder what is recommended according to best practices?
