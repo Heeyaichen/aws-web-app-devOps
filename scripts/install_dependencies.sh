@@ -13,7 +13,8 @@ sudo sed -i 's/#LoadModule proxy_http_module/LoadModule proxy_http_module/' /etc
 sudo cat << EOF > /etc/httpd/conf.d/tomcat_proxy.conf
 <VirtualHost *:80>
   ServerAdmin root@localhost
-  ServerName app.nextwork.com
+  # Allow any hostname
+  # ServerName app.nextwork.com
   DefaultType text/html
 
   ProxyRequests off
@@ -34,7 +35,11 @@ EOF
 sudo mkdir -p /var/log/httpd
 sudo chown -R apache:apache /var/log/httpd
 
-# Restart services
-# sudo systemctl restart httpd
-# sudo systemctl restart tomcat
+# Start and enable Apache HTTP Server
+echo "Starting and enabling Apache HTTP Server..."
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+echo "Verifying Tomcat Status..."
+sudo systemctl status tomcat
 
