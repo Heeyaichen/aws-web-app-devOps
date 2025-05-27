@@ -9,7 +9,7 @@ Parameters:
 
   GitHubRepo:
     Type: String
-    Default: "aws-java-app-devOps"
+    Default: "aws-web-app-devOps"
     Description: GitHub repository name
 
   GitHubBranch:
