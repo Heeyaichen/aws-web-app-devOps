@@ -8,7 +8,7 @@ This project demonstrates a complete DevOps pipeline for a Java web application 
 
 This project was inspired by NextWork's [7-Day DevOps Challenge](https://learn.nextwork.org/projects/aws-devops-cicd?track=high). While following a similar architectural approach, this implementation includes additional automation through shell scripts, enhanced CloudFormation templates, and a customized web application.
 
-
+![Image](https://github.com/user-attachments/assets/aac62367-9271-4531-b736-6af4339ad63c)
 
 ## Table of Contents
 
