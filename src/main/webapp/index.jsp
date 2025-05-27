@@ -20,7 +20,7 @@
         <div class="container">
             <div class="portfolio-card">
                 <div class="name-section">
-                    <h1>Hi, I'm Heeyaichen</h1>
+                    <h1>Hi, I'm Heeyai chen</h1>
                 </div>
 
                 <div class="image-section">
