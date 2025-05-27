@@ -23,4 +23,5 @@ artifacts:
     - appspec.yml
     - scripts/**/*
   discard-paths: no
-
+  name: nextwork-web-build.zip
+  base-directory: '.'
