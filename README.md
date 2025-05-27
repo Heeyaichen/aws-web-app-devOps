@@ -2,11 +2,19 @@
 
 A complete CI/CD pipeline for Java web applications using AWS DevOps services.
 
+## Overview
+
+This project demonstrates a complete DevOps pipeline for a Java web application using AWS services. It includes infrastructure as code (CloudFormation), build and deployment automation, and a sample Java web application.
+
+This project was inspired by NextWork's [7-Day DevOps Challenge](https://learn.nextwork.org/projects/aws-devops-cicd?track=high). While following a similar architectural approach, this implementation includes additional automation through shell scripts, enhanced CloudFormation templates, and a customized web application.
+
+
+
 ## Table of Contents
 
 - [AWS Java Web Application DevOps Pipeline](#aws-java-web-application-devops-pipeline)
-  - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
   - [Architecture](#architecture)
   - [AWS Services Used](#aws-services-used)
   - [Prerequisites](#prerequisites)
@@ -23,9 +31,6 @@ A complete CI/CD pipeline for Java web applications using AWS DevOps services.
   - [Cleanup](#cleanup)
   - [Additional Documentation](#additional-documentation)
 
-## Overview
-
-This project demonstrates a complete DevOps pipeline for a Java web application using AWS services. It includes infrastructure as code (CloudFormation), build and deployment automation, and a sample Java web application.
 
 ## Architecture
 
@@ -34,8 +39,6 @@ The architecture consists of three main components:
 1. **Build Infrastructure** - Core resources for building applications
 2. **CI/CD Pipeline** - Complete CI/CD pipeline configuration
 3. **Deployment Environment** - Target environment for application deployment
-
-![Architecture Diagram](https://via.placeholder.com/800x400?text=AWS+DevOps+Pipeline+Architecture)
 
 ## AWS Services Used
 
