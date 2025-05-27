@@ -189,5 +189,44 @@ npm-debug.log
 # Build artifacts
 build/
 dist/
+bin/
+
+# AWS and deployment files
+.aws/
+aws-credentials
+aws.properties
+credentials.csv
+.env
+.env.local
+*.pem
+*.ppk
+credentials/
+
+# Deployment artifacts
+nextwork-web-build.zip
+
+# CodeArtifact auth tokens
+.codeartifact-token
+
+# Local configuration file
+application-local.properties
+application-dev.properties
+
+# CloudFormation auto-generated files
+.cloudformation/
+*.template-generated.*
+
+# AWS SAM
+.aws-sam/
+samconfig.toml
+
+# Maven CodeArtifact config
+.m2/settings-codeartifact.xml
+
+# Backup files
+*~
+*.bak
+*.swp
+*.swo
 
 # End of https://www.gitignore.io/api/git,java,maven,eclipse,windows
