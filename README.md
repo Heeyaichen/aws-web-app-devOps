@@ -12,7 +12,7 @@ This project was inspired by NextWork's [7-Day DevOps Challenge](https://learn.n
 
 ## Table of Contents
 
-- [AWS Java Web Application DevOps Pipeline](#aws-java-web-application-devops-pipeline)
+- [AWS Web Application DevOps Pipeline](#aws-web-application-devops-pipeline)
   - [Overview](#overview)
   - [Table of Contents](#table-of-contents)
   - [Architecture](#architecture)
@@ -29,7 +29,11 @@ This project was inspired by NextWork's [7-Day DevOps Challenge](https://learn.n
     - [Accessing the Application](#accessing-the-application)
     - [Common Issues](#common-issues)
   - [Cleanup](#cleanup)
-  - [Additional Documentation](#additional-documentation)
+  - [Future Enhancements](#future-enhancements)
+    - [Security Improvements](#security-improvements)
+    - [Application Enhancements](#application-enhancements)
+    - [Infrastructure Improvements](#infrastructure-improvements)
+    - [CI/CD Enhancements](#cicd-enhancements)
 
 
 ## Architecture
@@ -137,6 +141,8 @@ This script will:
 
 During the process, you'll need to authorize the GitHub connection when prompted.
 
+- For additional information, please refer to - [Deployment Scripts Documentation](scripts/README.md) and [CloudFormation Templates Documentation](cloudformation-templates/README.md)
+
 ## CI/CD Pipeline
 
 The CI/CD pipeline consists of three stages:
@@ -183,13 +189,48 @@ To delete all resources created by this project:
 ```
 
 This script will:
-1. Empty all S3 buckets
+1. Empty & delete all S3 buckets
 2. Delete the CI/CD pipeline stack
 3. Delete the build infrastructure stack
 4. Delete the deployment server stack
 
-## Additional Documentation
+## Future Enhancements
 
-- [CloudFormation Templates Documentation](cloudformation-templates/README.md)
-- [Deployment Scripts Documentation](scripts/README.md)
-- [AWS DevOps Blog](https://aws.amazon.com/blogs/devops/)
+### Security Improvements
+- **Network Security**:
+  - Replace open security group rules (0.0.0.0/0) with restricted CIDR blocks
+  - Implement AWS WAF with CloudFront for edge protection
+  - Configure TLS termination at load balancer level
+  - Migrate from HTTP to HTTPS with proper certificates
+- **Monitoring & Detection**:
+  - Set up CloudWatch alarms for unusual traffic patterns
+  - Enable AWS GuardDuty for threat detection
+  - Implement AWS Config for compliance monitoring
+
+### Application Enhancements
+- **Architecture Upgrade**:
+  - Migrate to Spring Boot framework with layered architecture
+  - Implement RESTful API endpoints
+  - Add database connectivity with Amazon RDS
+  - Implement user authentication with Amazon Cognito
+  
+### Infrastructure Improvements
+- **High Availability**:
+  - Deploy across multiple Availability Zones
+  - Implement Auto Scaling for EC2 instances
+  - Add Elastic Load Balancing for traffic distribution
+- **Containerization**:
+  - Migrate to container-based deployment with Amazon ECS/EKS
+  - Implement Docker for consistent environments
+  - Add container security scanning
+
+### CI/CD Enhancements
+- **Testing**:
+  - Add automated unit and integration testing
+  - Implement code quality gates with SonarQube
+  - Add security scanning with OWASP dependency checks
+- **Deployment Strategy**:
+  - Implement blue/green deployment strategy
+  - Add canary releases for gradual rollout
+  - Configure automated rollbacks based on health checks
+
