@@ -1,4 +1,4 @@
-# AWS Java Web Application DevOps Pipeline
+# AWS Web Application DevOps Pipeline
 
 A complete CI/CD pipeline for Java web applications using AWS DevOps services.
 
