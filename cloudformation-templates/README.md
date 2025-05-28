@@ -137,6 +137,8 @@ This stack creates the complete CI/CD pipeline that connects source code, build,
 
 ### 3. Deployment Server Stack (`deployment-server-stack.yaml`)
 
+![Image](https://github.com/user-attachments/assets/fa2e3f6d-ec22-4e0f-a4b0-b1b6ff4a9a17)
+
 This stack creates the target environment for application deployment:
 
 #### Resources:
